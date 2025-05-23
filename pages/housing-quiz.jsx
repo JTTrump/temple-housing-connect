@@ -1,5 +1,6 @@
-import DashboardLayout from "@/components/DashboardLayout";
-import { Card, CardContent } from "@/components/ui/card";
+import DashboardLayout from "../components/DashboardLayout";
+import { Card, CardContent } from "../components/ui/card";
+
 
 export default function HousingGuide() {
   return (

@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { collection, getDocs, query, orderBy, limit } from "firebase/firestore";
 import { db } from "../lib/firebase";
-import DashboardLayout from "@/components/DashboardLayout";
-import Link from "next/link";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import DashboardLayout from "../components/DashboardLayout";
+import { Card, CardContent } from "../components/ui/card";
+
+import { Card, CardContent } from "../components/ui/card";
+import { Button } from "../components/ui/button";
+
 
 export default function HomePage() {
   const [recentPosts, setRecentPosts] = useState([]);

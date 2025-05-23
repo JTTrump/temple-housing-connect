@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../lib/firebase";
-import DashboardLayout from "@/components/DashboardLayout";
-import { Card, CardContent } from "@/components/ui/card";
+import DashboardLayout from "../components/DashboardLayout";
+import { Card, CardContent } from "../components/ui/card";
+
 
 export default function UnfurnishedPage() {
   const [listings, setListings] = useState([]);
