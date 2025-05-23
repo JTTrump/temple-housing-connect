@@ -1,82 +1,66 @@
-import Link from "next/link";
-import { useEffect, useState } from "react";
-import { collection, getDocs, query, orderBy, limit } from "firebase/firestore";
-import { db } from "../lib/firebase";
 import DashboardLayout from "../components/DashboardLayout";
 import { Card, CardContent } from "../components/ui/card";
-import { Button } from "../components/ui/button";
-
+import Link from "next/link";
 
 export default function HomePage() {
-  const [recentPosts, setRecentPosts] = useState([]);
-
-  useEffect(() => {
-    const fetchRecent = async () => {
-      const q = query(collection(db, "leaseRoommatePosts"), orderBy("timestamp", "desc"), limit(3));
-      const snapshot = await getDocs(q);
-      const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-      setRecentPosts(data);
-    };
-    fetchRecent();
-  }, []);
-
   return (
     <DashboardLayout>
-      <div className="p-6 max-w-4xl mx-auto space-y-10">
-        <div className="text-center">
-          <h1 className="text-4xl font-bold">Temple Housing Connect</h1>
-          <p className="text-gray-600 mt-2 text-lg">
-            Simplifying off-campus housing for students — one click at a time.
-          </p>
-        </div>
+      <div className="space-y-8">
+        <h1 className="text-3xl font-bold text-red-700">Temple Housing Connect</h1>
+        <p className="text-gray-700">
+          Welcome to your one-stop shop for off-campus housing near Temple University. Explore your
+          options:
+        </p>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <SectionLink href="/furnished" label="🏠 Furnished Apartments" />
-          <SectionLink href="/unfurnished" label="🏚️ Unfurnished Apartments" />
-          <SectionLink href="/agencies" label="🏢 Agencies & Property Managers" />
-          <SectionLink href="/landlords" label="🧍 Independent Landlord Listings" />
-          <SectionLink href="/lease-roommate-hub" label="🔄 Lease & Roommate Hub (Subleasing)" />
-          <SectionLink href="/housing-guide" label="📘 Housing Guide" />
-          <SectionLink href="/housing-quiz" label="🧠 Housing Fit Quiz" />
+          <SectionLink href="/furnished" label="Furnished Apartments" />
+          <SectionLink href="/unfurnished" label="Unfurnished Apartments" />
+          <SectionLink href="/landlords" label="Local Landlords" />
+          <SectionLink href="/agencies" label="Off-Campus Agencies" />
+          <SectionLink href="/student" label="Student Subleases + Roommates" />
         </div>
 
-        <div className="pt-10">
-          <h2 className="text-2xl font-semibold mb-4">🆕 Recent Student Posts</h2>
-          <div className="space-y-4">
-            {recentPosts.length > 0 ? (
-              recentPosts.map(post => (
-                <Card key={post.id}>
-                  <CardContent className="p-4 space-y-1">
-                    <h3 className="font-semibold">{post.name} ({post.type})</h3>
-                    <p className="text-sm text-gray-700">{post.description}</p>
-                    <p className="text-sm text-blue-600">📧 {post.email}</p>
-                  </CardContent>
-                </Card>
-              ))
-            ) : (
-              <p className="text-gray-500">No posts yet.</p>
-            )}
-          </div>
-        </div>
+        <Card className="mt-8">
+          <CardContent className="space-y-2">
+            <h2 className="text-xl font-semibold text-red-700">Don’t know where to start?</h2>
+            <p>Check out our housing advice and take the quiz below to figure out your fit:</p>
+            <ul className="list-disc list-inside space-y-1">
+              <li>
+                <Link href="/housing-guide" className="text-blue-600 underline">
+                  Read the Full Housing Guide →
+                </Link>
+              </li>
+              <li>
+                <Link href="/housing-quiz" className="text-blue-600 underline">
+                  Take the Housing Fit Quiz →
+                </Link>
+              </li>
+            </ul>
+          </CardContent>
+        </Card>
 
-        <div className="pt-10 border-t">
-          <h2 className="text-2xl font-semibold mb-4">📘 How to Choose the Right Housing Option</h2>
-          <div className="space-y-4 text-gray-700">
-            <p>🏠 <strong>Furnished Apartments:</strong> Great for students new to the area or with short leases. More expensive but move-in ready.</p>
-            <p>🏚️ <strong>Unfurnished Apartments:</strong> Lower cost, more setup. Ideal for longer-term residents with roommates and furniture.</p>
-            <p>🏫 <strong>Student Dorms:</strong> Social, simple, all-in-one. Perfect for first-years who want on-campus life.</p>
-            <p>🏘️ <strong>Off-Campus Private Houses:</strong> Bigger spaces, group living. Great for juniors/seniors who want privacy and control.</p>
-          </div>
-          <div className="pt-4 text-center">
-            <Link href="/housing-guide">
-              <a className="text-blue-600 underline">Read the Full Housing Guide →</a>
+        <Card className="mt-8">
+          <CardContent>
+            <h2 className="text-xl font-semibold text-red-700">Need to List Your Property?</h2>
+            <p>
+              Are you a landlord or student looking to list a unit or sublease? Use our form and get
+              added to the map.
+            </p>
+            <Link href="/landlords" className="text-blue-600 underline block mt-2">
+              Go to Landlord Listing Form →
             </Link>
-            <span className="mx-2">|</span>
-            <Link href="/housing-quiz">
-              <a className="text-blue-600 underline">Take the Fit Quiz →</a>
+          </CardContent>
+        </Card>
+
+        <Card className="mt-8">
+          <CardContent>
+            <h2 className="text-xl font-semibold text-red-700">Want Help Choosing?</h2>
+            <p>Our housing dashboard is designed to make your search easier.</p>
+            <Link href="/student" className="text-blue-600 underline block mt-2">
+              View Subleases + Roommate Exchange →
             </Link>
-          </div>
-        </div>
+          </CardContent>
+        </Card>
       </div>
     </DashboardLayout>
   );
@@ -84,10 +68,11 @@ export default function HomePage() {
 
 function SectionLink({ href, label }) {
   return (
-    <Link href={href}>
-      <a className="block p-4 bg-white rounded shadow hover:bg-gray-50 border text-lg text-blue-600">
-        {label}
-      </a>
+    <Link
+      href={href}
+      className="block p-4 bg-white rounded shadow hover:bg-gray-50 border text-lg text-blue-700 font-medium"
+    >
+      {label}
     </Link>
   );
 }
